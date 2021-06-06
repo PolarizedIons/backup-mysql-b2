@@ -1,0 +1,22 @@
+name: BuildAndPush
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Build Container & Publish to Github Container Registry
+        uses: elgohr/Publish-Docker-Github-Action@2.14
+        with:
+          name: polarizedions/backup-mysql-b2
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: ghcr.io
+          tags: "latest"
+          dockerfile: ./Dockerfile
